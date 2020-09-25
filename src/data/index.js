@@ -1,4 +1,15 @@
-import S2020 from "./S2020";
-import W2020 from "./W2020";
+import mapValues from 'lodash/mapValues'
 
-export default { S2020, W2020 };
+import { calculateAllTimeStats , enhanceData } from "data/calculations"
+import S2020 from "data/S2020";
+
+const TournamentScores = mapValues({
+  S2020,
+}, enhanceData)
+
+const AllTime = calculateAllTimeStats(TournamentScores)
+
+// const calculateEloScores = () => undefined
+
+export default AllTime;
+export { TournamentScores }

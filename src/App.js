@@ -1,42 +1,24 @@
-import React, { useState } from 'react';
-import parse from 'csv-parse/lib/sync'
+import React, { useState } from 'react'
 
-import sortBy from 'lodash/sortBy'
-import keys from 'lodash/keys'
-import reduce from 'lodash/reduce'
+import concat from 'lodash/concat'
 import Select from 'react-select'
 
-import YearlyData from './data'
-import ScoresTable from "./ScoresTable"
+import AllTime, { TournamentScores } from 'data'
+
+import { AllTimeStatsPage, TournamentPage } from "pages"
 
 const App = () => {
-  const options = sortBy(keys(YearlyData)).map(value => {
-    const shortSeason = value.slice(0, 1) === "S" ? "Summer" : "Winter"
-    const year = value.slice(1)
-    const label = `${shortSeason} ${year}`
-    return { label, value }
-  })
-  const defaultCsv = YearlyData[options[0].value];
-  const [csvData, setCsvData] = useState(defaultCsv);
+  const [scoresKey, setScoresKey] = useState("AllTime")
+  const data = scoresKey === "AllTime" ? AllTime : TournamentScores[scoresKey]
 
-  const castScore = (value, context) => {
-    const isScore = !context.header && context.column.startsWith("game")
-    return isScore ? parseInt(value.trim()) : value
-  }
-  const data = parse(csvData, {columns: true, cast: castScore }).map(
-    datum => {
-      const totalScore = reduce(datum, (result, value, key) => {
-        if (!key.startsWith("game")) return result;
-        return result + value;
-      }, 0)
-
-      const stats = { totalScore }
-      return { stats, ...datum }
-    }
-  )
+  const sortedScores = Object.entries(TournamentScores).sort((a, b) => (a.color > b.color) ? 1 : -1)
+  const options = concat(
+    [{ label: "All Time Scores", value: "AllTime" }],
+    sortedScores.map(([key, value]) => ({ label: value.longName, value: key })
+  ))
 
   const customSelectStyles = {
-    option: (styles, { isFocused, isSelected }) => ({
+    option: (styles) => ({
       ...styles,
       cursor: 'pointer',
       color: "#1a202c",
@@ -52,28 +34,29 @@ const App = () => {
     }),
   }
 
+  const Red = ({ children }) => <span className="text-red-500">{children}</span>
+
   return (
     <div className="align-center bg-gray-100 text-gray-900 min-h-100vh flex flex-col items-center">
       <div className="w-7/12 flex flex-col">
-        <header className="w-full font-bold mb-8">
-          {/* <h1 className="text-4xl float-left">Euchre Stats ♠ ♡ ♦ ♧</h1> */}
+        <header className="w-full font-bold mb-8 pt-4">
           <h1 className="text-4xl float-left">
-            Euchre Stats ♠ <span className="text-red-500">♥</span> ♦ <span className="text-red-500">♣</span>
+            Euchre Stats ♠ <Red>♥</Red> ♦ <Red>♣</Red>
           </h1>
-          {/* ♠ ♥ ♦ ♣ */}
-          {/* ♤	♡	♢	♧ */}
         </header>
 
         <Select
           options={options}
-          value={options[0]}
-          placeholder="Tournament"
+          defaultValue={options[0]}
           className="float-left w-64 mb-8"
-          onChange={setCsvData}
+          onChange={({ value }) => setScoresKey(value)}
           styles={customSelectStyles}
         />
         
-        <ScoresTable data={data} />
+        {scoresKey === "AllTime"
+          ? <AllTimeStatsPage data={data} />
+          : <TournamentPage data={data.allPlayerData} />
+        }
       </div>
     </div>
   );
