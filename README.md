@@ -10,6 +10,8 @@ A tracker for my family's euchre tournament stats and scores.
 - [ ] Move data source into Google Sheets
 - [ ] Make sure everything is responsive
 - [ ] Change favicon and logos
+- [ ] Use Typescript
+- [ ] Write tests?
 
 
 ## Deploy

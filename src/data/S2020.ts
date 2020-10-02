@@ -1,4 +1,4 @@
-const Csv = `
+const Csv : string = `
 name,game1,game2,game3,game4,game5,game6,game7,game8,game9,game10,game11,game12,game13,game14,game15
 Pete,0,    8,    9,    6,    8,    6,    4,    8,    8,    5,     9,     8,     9,     7,     8     
 Becky,2,   8,    8,    2,    8,    7,    6,    8,    9,    8,     8,     1,     8,     11,    8

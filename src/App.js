@@ -11,7 +11,7 @@ const App = () => {
   const [scoresKey, setScoresKey] = useState("AllTime")
   const data = scoresKey === "AllTime" ? AllTime : TournamentScores[scoresKey]
 
-  const sortedScores = Object.entries(TournamentScores).sort((a, b) => (a.color > b.color) ? 1 : -1)
+  const sortedScores = Object.entries(TournamentScores).sort((a, b) => (a[1].shortName > b[1].shortName) ? 1 : -1)
   const options = concat(
     [{ label: "All Time Scores", value: "AllTime" }],
     sortedScores.map(([key, value]) => ({ label: value.longName, value: key })
@@ -55,7 +55,7 @@ const App = () => {
         
         {scoresKey === "AllTime"
           ? <AllTimeStatsPage data={data} />
-          : <TournamentPage data={data.allPlayerData} />
+          : <TournamentPage data={data.playerData} />
         }
       </div>
     </div>
