@@ -37,8 +37,8 @@ const ScoresTable = ({ data, className, ...props }) => {
   )
 
   const initialState = { sortBy: [{ id: "totalGamesWon", desc: true }]}
-  // const tableInstance = useTable({ columns, data: Object.values(data), initialState, disableSortRemove: true }, useSortBy)
-  const tableInstance = useTable({ columns, data: Object.values(data), initialState }, useSortBy)
+  const tableInstance = useTable({ columns, data: Object.values(data), initialState, disableSortRemove: true }, useSortBy)
+  // const tableInstance = useTable({ columns, data: Object.values(data), initialState }, useSortBy)
   const {
     getTableProps,
     getTableBodyProps,
@@ -49,7 +49,7 @@ const ScoresTable = ({ data, className, ...props }) => {
 
   return (
     // apply the table props
-    <table {...getTableProps()} className="w-all border border-gray-900">
+    <table {...getTableProps()} className="w-full border border-gray-900">
       <thead className=" -mt-8 h-8 bg-gray-400">
         {// Loop over the header rows
         headerGroups.map((headerGroup) => (

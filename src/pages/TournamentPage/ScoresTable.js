@@ -3,11 +3,10 @@ import { useTable, useSortBy } from 'react-table'
 
 const ScoresTable = ({ data, className, ...props }) => {
   // Dynamically get the game columns because there may be 11 games one year and 15 the next.
-  const gameColumns = Object.entries(data[0]).reduce((result, [key, _value]) => {
-    if (!key.startsWith("game")) return result;
-
-    const gameNumber = parseInt(key.slice(4))
-    result[gameNumber - 1] = {Header: `G${gameNumber}`, accessor: key}
+  // const gameColumns = Object.entries(data[0].orderedGames).reduce((result, [key, _value]) => {
+  const gameColumns = Object.entries(data[0].orderedGames).reduce((result, [key, _value]) => {
+    const gameNumber = parseInt(key) + 1
+    result[key] = {Header: `G${gameNumber}`, accessor: datum => datum.orderedGames[key]}
     return result;
   }, [])
   const columns = useMemo(

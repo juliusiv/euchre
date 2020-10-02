@@ -38,10 +38,11 @@ const App = () => {
 
   return (
     <div className="align-center bg-gray-100 text-gray-900 min-h-100vh flex flex-col items-center">
-      <div className="w-7/12 flex flex-col">
+      <div className="w-10/12 max-w-3xl mx-auto flex flex-col">
         <header className="w-full font-bold mb-8 pt-4">
           <h1 className="text-4xl float-left">
-            Euchre Stats ♠ <Red>♥</Red> ♦ <Red>♣</Red>
+            Euchre Stats
+            <span className="text-xl ml-2">♠ <Red>♥</Red> ♦ <Red>♣</Red></span>
           </h1>
         </header>
 

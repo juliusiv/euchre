@@ -4,7 +4,9 @@ import AllTimeStatsTable from "./AllTimeStatsTable"
 
 const AllTimeStatsPage = ({ data, ...props }) => {
   return (
-    <AllTimeStatsTable data={data} />
+    <div className="overflow-x-auto">
+      <AllTimeStatsTable data={data} />
+    </div>
   )
 }
 

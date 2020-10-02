@@ -11,7 +11,7 @@ const castScore = (value : string, context : any ) => {
 const enhanceData = (csvData : string, shortName : string) : TournamentData => {
   const gamesPlayedTo = 8
 
-  const data = parse(csvData, {columns: true, cast: castScore }).map(
+  const playerData = parse(csvData, {columns: true, cast: castScore }).map(
     // TODO: figure out how to type `playerScores`
     (playerScores : any) : PlayerTournamentData => {
       const orderedGames : number[] = reduce(playerScores, (result : number[], score : number, game : string) => {
@@ -29,6 +29,10 @@ const enhanceData = (csvData : string, shortName : string) : TournamentData => {
       return { stats, orderedGames, name: playerScores.name }
     }
   )
+  playerData.sort((a : any, b : any) => a.stats.totalScore > b.stats.totalScore)
+  // playerData.forEach(({ stats }, index) => {
+    
+  // });
 
   const shortSeason = shortName.slice(0, 1) === "S" ? "Summer" : "Winter"
   const year = shortName.slice(1)
@@ -36,7 +40,7 @@ const enhanceData = (csvData : string, shortName : string) : TournamentData => {
   return {
     longName: `${shortSeason} ${year}`,
     shortName,
-    playerData: data,
+    playerData: playerData,
     gamesPlayedTo
   }
 }
