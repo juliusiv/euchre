@@ -9,9 +9,8 @@ A tracker for my family's euchre tournament stats and scores.
 - [ ] Figure out how to add historic data that only kept track of the top 3 finishers and their scores
 - [ ] Move data source into Google Sheets
 - [x] Make sure everything is responsive
-- [ ] Change favicon and logos
+- [x] Change favicon and logos
 - [ ] Use Typescript (partially done)
-- [ ] Write tests?
 - [ ] Adding routing
 
 
