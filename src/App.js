@@ -1,14 +1,19 @@
-import React, { useState } from 'react'
+import React from "react"
 
-import concat from 'lodash/concat'
-import Select from 'react-select'
+import concat from "lodash/concat"
+import Select from "react-select"
+import { useHistory, withRouter } from "react-router-dom";
 
-import AllTime, { TournamentScores } from 'data'
+import AllTime, { TournamentScores } from "data"
 
 import { AllTimeStatsPage, TournamentPage } from "pages"
 
+
 const App = () => {
-  const [scoresKey, setScoresKey] = useState("AllTime")
+  const history = useHistory();
+  const hash = history.location.hash;
+
+  const scoresKey = hash === "" ? "AllTime" : hash.slice(1);
   const data = scoresKey === "AllTime" ? AllTime : TournamentScores[scoresKey]
 
   const sortedScores = Object.entries(TournamentScores).sort((a, b) => (a[1].shortName > b[1].shortName) ? 1 : -1)
@@ -50,7 +55,11 @@ const App = () => {
           options={options}
           defaultValue={options[0]}
           className="float-left w-64 mb-8"
-          onChange={({ value }) => setScoresKey(value)}
+          onChange={({ value }) => {
+            if (value === scoresKey) return;
+
+            history.push({ hash: value })
+          }}
           styles={customSelectStyles}
         />
         
@@ -63,4 +72,4 @@ const App = () => {
   );
 }
 
-export default App;
+export default withRouter(App);

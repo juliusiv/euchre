@@ -4,9 +4,20 @@ import './index.css';
 import './tailwind.output.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { HashRouter } from "react-router-dom";
+
+
+const AppWithHistory = () => {
+  return (
+    <HashRouter>
+      <App />
+    </HashRouter>
+  )
+};
+
 
 ReactDOM.render(
-  <App />,
+  <AppWithHistory />,
   document.getElementById('root')
 );
 
