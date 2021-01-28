@@ -8,6 +8,7 @@ export type TournamentData = {
 export type PlayerTournamentStats = {
   totalScore: number;
   gamesWon: number;
+  place: number;
 }
 
 export type PlayerTournamentData = {

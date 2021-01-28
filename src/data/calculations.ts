@@ -27,13 +27,19 @@ const enhanceData = (csvData : string, shortName : string) : TournamentData => {
       const totalScore : number = sum(orderedGames)
       const gamesWon : number = reduce(orderedGames, (result : number, score : number) => result += score >= 8 ? 1 : 0, 0)
 
-      const stats : PlayerTournamentStats = { totalScore, gamesWon }
+      const stats : PlayerTournamentStats = { totalScore, gamesWon, place: 0 }
       return { stats, orderedGames, name: playerScores.name }
     }
   )
   playerData.sort((a, b) => a.stats.totalScore - b.stats.totalScore)
   // playerData.forEach(({ stats }, index) => {
   // });
+  // playerData.sort((a : any, b : any) => a.stats.totalScore > b.stats.totalScore)
+  let currentPlace = 1;
+  for (let i = 0; i < playerData.length; i++) {
+    const element = playerData[i];
+    
+  }
 
   const shortSeason = shortName.slice(0, 1) === "S" ? "Summer" : "Winter"
   const year = shortName.slice(1)
