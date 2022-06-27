@@ -3,7 +3,11 @@ import React from "react"
 import ScoresTable from "./ScoresTable"
 // import ProgressionChart from "./ProgressionChart"
 
-const TournamentPage = ({ data, ...props }) => {
+type TournamentPageProps = {
+  data: any;
+};
+
+const TournamentPage = ({ data, ...props }: TournamentPageProps) => {
   return (
     <div>
       <div className="overflow-x-auto">

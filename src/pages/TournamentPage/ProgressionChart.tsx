@@ -22,9 +22,15 @@ const Colors = [
 
 ]
 
-const ProgressionChart = ({ data, ...props }) => {
-  const lineData = useMemo(() => data.map((datum, i) => {
-    const cumulativeScores = reduce(datum.orderedGames, (result, value, index) => {
+type LineData = {
+  name: string;
+  color: string;
+  cumulativeScores: { x: number, y: number };
+};
+
+const ProgressionChart = ({ data }: { data: any }) => {
+  const lineData: LineData[] = useMemo(() => data.map((datum: any, i: number) => {
+    const cumulativeScores = reduce(datum.orderedGames, (result, value, index: number) => {
       result.push({ x: index + 1, y: result[index].y + value })
       return result
     }, [{ x: 0, y: 0 }])
@@ -50,18 +56,18 @@ const ProgressionChart = ({ data, ...props }) => {
           gutter={15}
           style={{ border: { stroke: "black" }, labels: {fontSize: 10 } }}
           itemsPerRow={4}
-          data={lineData.map(({ name, color }) => {
+          data={lineData.map(({ name, color }: { name: string; color: string }) => {
             return { name, symbol: { fill: color } }
           })}
         />
-        {lineData.map(({ name, color, cumulativeScores }) => {
+        {lineData.map(({ name, color, cumulativeScores }: LineData) => {
           return (
             <VictoryLine
               key={name}
               style={{
                 data: { stroke: color }
               }}
-              data={cumulativeScores}
+              data={cumulativeScores as any}
             />
           )
         })}

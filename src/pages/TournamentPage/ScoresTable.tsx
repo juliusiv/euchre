@@ -1,7 +1,20 @@
 import React, { useMemo } from 'react'
-import { useTable, useSortBy } from 'react-table'
+import { useTable, useSortBy, Column } from 'react-table'
 
-const ScoresTable = ({ data, className, ...props }) => {
+type ScoresTableProps = {
+  data: any;
+  className?: string;
+};
+
+const ScoresTable = ({ data, className, ...props }: ScoresTableProps) => {
+  // Dynamically get the game columns because there may be 11 games one year and 15 the next.
+  const numGames = data[0].orderedGames.length;
+  const gameColumns: Column[] = [];
+  for (let i = 0; i < numGames; i++) {
+    const gameNumber = i + 1;
+    const columnHeader = {Header: `G${gameNumber}`, accessor: (datum: any) => datum.orderedGames[i]};
+    gameColumns.push(columnHeader);
+  };
   const columns = useMemo(
     () => [
       {
@@ -9,36 +22,20 @@ const ScoresTable = ({ data, className, ...props }) => {
         accessor: "name"
       },
       {
-        Header: "Games Won",
-        accessor: "totalGamesWon",
+        Header: "Total",
+        accessor: "stats.totalScore",
+        id: "totalScore"
       },
-      {
-        Header: "Elo Score",
-        accessor: "eloScore"
-      },
-      {
-        Header: "🥇",
-        accessor: "firstPlaceFinishes",
-      },
-      {
-        Header: "🥈",
-        accessor: "secondPlaceFinishes",
-      },
-      {
-        Header: "🥉",
-        accessor: "thirdPlaceFinishes",
-      },
-      {
-        Header: "Average Place",
-        accessor: "averagePlace",
-      },
+      ...gameColumns
     ],
-    []
+    // The dependency is `data` instead of `gameColumns` because the latter is derived from the
+    // former. Without this, we'll hit a maximum update depth error.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [data]
   )
 
-  const initialState = { sortBy: [{ id: "totalGamesWon", desc: true }]}
-  const tableInstance = useTable({ columns, data: Object.values(data), initialState, disableSortRemove: true }, useSortBy)
-  // const tableInstance = useTable({ columns, data: Object.values(data), initialState }, useSortBy)
+  const initialState = { sortBy: [{ id: "totalScore", desc: true }]};
+  const tableInstance = useTable({ columns, data, initialState, disableSortRemove: true } as any, useSortBy)
   const {
     getTableProps,
     getTableBodyProps,
@@ -49,14 +46,14 @@ const ScoresTable = ({ data, className, ...props }) => {
 
   return (
     // apply the table props
-    <table {...getTableProps()} className="w-full border border-gray-900">
+    <table {...getTableProps()} className="w-all border border-gray-900">
       <thead className=" -mt-8 h-8 bg-gray-400">
         {// Loop over the header rows
-        headerGroups.map((headerGroup) => (
+        headerGroups.map(headerGroup => (
           // Apply the header row props
           <tr {...headerGroup.getHeaderGroupProps()}>
             {// Loop over the headers in each row
-            headerGroup.headers.map((column) => (
+            headerGroup.headers.map((column: any) => (
               // Apply the header cell props
               <th
                 {...column.getHeaderProps(column.getSortByToggleProps())}
@@ -79,7 +76,7 @@ const ScoresTable = ({ data, className, ...props }) => {
       {/* Apply the table body props */}
       <tbody {...getTableBodyProps()}>
         {// Loop over the table rows
-        rows.map((row) => {
+        rows.map(row => {
           // Prepare the row for display
           prepareRow(row)
           return (
@@ -89,7 +86,7 @@ const ScoresTable = ({ data, className, ...props }) => {
               className="pl-2 pr-2 pt-1 pb-1 border-gray-900 border-b border-r cursor-pointer even:bg-gray-300 odd:bg-gray-100"
             >
               {// Loop over the rows cells
-              row.cells.map((cell) => {
+              row.cells.map(cell => {
                 // Apply the cell props
                 return (
                   <td {...cell.getCellProps()} className="pl-2 pr-2 pt-1 pb-1 border-gray-900 border-b border-r">

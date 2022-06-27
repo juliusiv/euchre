@@ -2,7 +2,7 @@ import React from "react"
 
 import concat from "lodash/concat"
 import Select from "react-select"
-import { useHistory, withRouter } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 
 import AllTime, { TournamentScores } from "data"
 
@@ -11,7 +11,8 @@ import { AllTimeStatsPage, TournamentPage } from "pages"
 
 const App = () => {
   const history = useHistory();
-  const hash = history.location.hash;
+  const location = useLocation();
+  const hash = location.hash;
 
   const scoresKey = hash === "" ? "AllTime" : hash.slice(1);
   const data = scoresKey === "AllTime" ? AllTime : TournamentScores[scoresKey]
@@ -23,7 +24,7 @@ const App = () => {
   ))
 
   const customSelectStyles = {
-    option: (styles) => ({
+    option: (styles: any) => ({
       ...styles,
       cursor: 'pointer',
       color: "#1a202c",
@@ -33,13 +34,13 @@ const App = () => {
         backgroundColor: "#cbd5e0"
       }
     }),
-    control: (styles) => ({
+    control: (styles: any) => ({
       ...styles,
       cursor: 'pointer',
     }),
   }
 
-  const Red = ({ children }) => <span className="text-red-500">{children}</span>
+  const Red = ({ children }: { children: string }) => <span className="text-red-500">{children}</span>
 
   return (
     <div className="align-center bg-gray-100 text-gray-900 min-h-100vh flex flex-col items-center">
@@ -55,10 +56,10 @@ const App = () => {
           options={options}
           defaultValue={options[0]}
           className="float-left w-64 mb-8"
-          onChange={({ value }) => {
+          onChange={({ value }: any) => {
             if (value === scoresKey) return;
 
-            history.push({ hash: value })
+            history.push({ hash: value });
           }}
           styles={customSelectStyles}
         />
@@ -72,4 +73,4 @@ const App = () => {
   );
 }
 
-export default withRouter(App);
+export default App;

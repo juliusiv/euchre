@@ -1,6 +1,7 @@
 import parse from 'csv-parse/lib/sync'
 import reduce from 'lodash/reduce'
 import sum from 'lodash/sum'
+
 import { PlayerAllTimeData, PlayerName, PlayerTournamentData, PlayerTournamentStats, TournamentData } from "data/types"
 
 const castScore = (value : string, context : any ) => {
@@ -10,7 +11,7 @@ const castScore = (value : string, context : any ) => {
 
 const enhanceData = (csvData : string, shortName : string) : TournamentData => {
   const gamesPlayedTo = 8
-
+  console.log(csvData)
   const playerData = parse(csvData, {columns: true, cast: castScore }).map(
     // TODO: figure out how to type `playerScores`
     (playerScores : any) : PlayerTournamentData => {
@@ -44,6 +45,10 @@ const enhanceData = (csvData : string, shortName : string) : TournamentData => {
     gamesPlayedTo
   }
 }
+
+// export const suggestMissingScores = (scores) => {
+//   return null;
+// }
 
 const calculateAllTimeStats = (tournamentScores : Record<PlayerName, TournamentData>) : Record<PlayerName, PlayerAllTimeData> => {
   const playerStats : Record<PlayerName, PlayerAllTimeData>= {}
