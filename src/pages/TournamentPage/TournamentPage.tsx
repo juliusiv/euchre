@@ -1,5 +1,3 @@
-import React from "react"
-
 import ScoresTable from "./ScoresTable"
 // import ProgressionChart from "./ProgressionChart"
 

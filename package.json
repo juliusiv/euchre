@@ -1,71 +1,28 @@
 {
   "name": "euchre",
-  "version": "0.1.0",
   "private": true,
-  "homepage": "https://juliusiv.github.io/euchre",
+  "version": "0.0.0",
+  "type": "module",
   "engines": {
-    "node": ">=16.13.2"
-  },
-  "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "@types/jest": "^26.0.14",
-    "@types/node": "^14.11.2",
-    "@types/react": "^16.9.49",
-    "@types/react-dom": "^16.9.8",
-    "@types/react-router-dom": "^5.3.3",
-    "chokidar-cli": "^2.1.0",
-    "classnames": "^2.2.6",
-    "csv-parse": "^4.12.0",
-    "lodash": "^4.17.20",
-    "npm-run-all": "^4.1.5",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-router-dom": "5.3.0",
-    "react-scripts": "3.4.3",
-    "react-select": "^3.1.0",
-    "react-table": "7.8.0",
-    "tailwindcss": "^1.8.10",
-    "victory": "^35.0.9"
+    "node": "v21.5.0"
   },
   "scripts": {
-    "build:tailwind": "tailwind build src/tailwind.css -o src/tailwind.output.css",
-    "watch:tailwind": "chokidar 'src/**/*.css' 'src/**/*.scss' --ignore src/tailwind.output.css -c 'npm run build:tailwind'",
-    "start": "npm-run-all build:tailwind --parallel watch:tailwind start:react",
-    "start:react": "react-scripts start",
-    "prebuild": "run-s build:tailwind",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "@tanstack/react-table": "^8.10.7",
+    "lodash": "^4.17.21",
+    "preact": "^10.19.1",
+    "react-router-dom": "^6.20.0",
+    "react-select": "^5.8.0",
+    "victory": "^36.6.12"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.161",
-    "@types/react-select": "^3.0.20",
-    "@types/react-table": "^7.7.12",
-    "eslint-config-airbnb": "^18.2.0",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.20.6",
-    "eslint-plugin-react-hooks": "^4.1.2",
-    "gh-pages": "^3.1.0",
-    "typescript": "^4.0.3"
+    "@preact/preset-vite": "^2.6.0",
+    "@types/lodash": "^4.14.202",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.0"
   }
 }

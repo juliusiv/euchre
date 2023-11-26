@@ -1,4 +1,3 @@
-import React, { useMemo } from "react"
 import reduce from 'lodash/reduce'
 
 import { VictoryChart, VictoryLegend, VictoryLine } from "victory"
@@ -29,7 +28,7 @@ type LineData = {
 };
 
 const ProgressionChart = ({ data }: { data: any }) => {
-  const lineData: LineData[] = useMemo(() => data.map((datum: any, i: number) => {
+  const lineData: LineData[] = data.map((datum: any, i: number) => {
     const cumulativeScores = reduce(datum.orderedGames, (result, value, index: number) => {
       result.push({ x: index + 1, y: result[index].y + value })
       return result
@@ -40,7 +39,7 @@ const ProgressionChart = ({ data }: { data: any }) => {
       cumulativeScores,
       color: Colors[i]
     }
-  }), [data])
+  });
 
   return (
     <div>

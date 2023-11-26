@@ -1,5 +1,3 @@
-import React from "react"
-
 import AllTimeStatsTable from "./AllTimeStatsTable"
 
 type AllTimeStatsPageProps = {
@@ -9,6 +7,7 @@ type AllTimeStatsPageProps = {
 const AllTimeStatsPage = ({ data, ...props }: AllTimeStatsPageProps) => {
   return (
     <div className="overflow-x-auto">
+      {/* Doot */}
       <AllTimeStatsTable data={data} />
     </div>
   )

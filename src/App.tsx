@@ -1,16 +1,14 @@
-import React from "react"
-
 import concat from "lodash/concat"
 import Select from "react-select"
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import AllTime, { TournamentScores } from "data"
+import AllTime, { TournamentScores } from "./data"
 
-import { AllTimeStatsPage, TournamentPage } from "pages"
+import { AllTimeStatsPage, TournamentPage } from "./pages"
 
 
 const App = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const hash = location.hash;
 
@@ -59,7 +57,7 @@ const App = () => {
           onChange={({ value }: any) => {
             if (value === scoresKey) return;
 
-            history.push({ hash: value });
+            navigate("#" + value);
           }}
           styles={customSelectStyles}
         />

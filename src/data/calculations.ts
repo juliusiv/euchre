@@ -1,36 +1,43 @@
-import parse from 'csv-parse/lib/sync'
 import reduce from 'lodash/reduce'
 import sum from 'lodash/sum'
 
-import { PlayerAllTimeData, PlayerName, PlayerTournamentData, PlayerTournamentStats, TournamentData } from "data/types"
+import { PlayerAllTimeData, PlayerName, PlayerTournamentData, PlayerTournamentStats, TournamentData } from "./types"
+import { sumBy } from 'lodash'
 
 const castScore = (value : string, context : any ) => {
   const isScore = !context.header && context.column.startsWith("game")
   return isScore ? parseInt(value.trim()) : value
 }
 
-const enhanceData = (csvData : string, shortName : string) : TournamentData => {
-  const gamesPlayedTo = 8
+const enhanceData = (csvData: Record<string, number[]>, shortName : string) : TournamentData => {
+  const gamesPlayedTo = 8;
   console.log(csvData)
-  const playerData = parse(csvData, {columns: true, cast: castScore }).map(
-    // TODO: figure out how to type `playerScores`
-    (playerScores : any) : PlayerTournamentData => {
-      const orderedGames : number[] = reduce(playerScores, (result : number[], score : number, game : string) => {
-        if (!game.startsWith("game")) return result;
+  const playerData = Object.entries(csvData).map(([playerName, scores]) => {
+    const totalScore : number = sum(scores);
+    const gamesWon : number = sumBy(scores, score => Number(score > 8));
 
-        const gameNumber = parseInt(game.slice(4))
-        result[gameNumber - 1] = score
+    const stats : PlayerTournamentStats = { totalScore, gamesWon };
+    return { stats, orderedGames: scores, name: playerName }
+  })
+  // const playerData = parse(csvData, {columns: true, cast: castScore }).map(
+  //   // TODO: figure out how to type `playerScores`
+  //   (playerScores : any) : PlayerTournamentData => {
+  //     const orderedGames : number[] = reduce(playerScores, (result : number[], score : number, game : string) => {
+  //       if (!game.startsWith("game")) return result;
 
-        return result
-      }, [])
-      const totalScore : number = sum(orderedGames)
-      const gamesWon : number = reduce(orderedGames, (result : number, score : number) => result += score >= 8 ? 1 : 0, 0)
+  //       const gameNumber = parseInt(game.slice(4))
+  //       result[gameNumber - 1] = score
 
-      const stats : PlayerTournamentStats = { totalScore, gamesWon }
-      return { stats, orderedGames, name: playerScores.name }
-    }
-  )
-  playerData.sort((a : any, b : any) => a.stats.totalScore > b.stats.totalScore)
+  //       return result
+  //     }, [])
+  //     const totalScore : number = sum(orderedGames)
+  //     const gamesWon : number = reduce(orderedGames, (result : number, score : number) => result += score >= 8 ? 1 : 0, 0)
+
+  //     const stats : PlayerTournamentStats = { totalScore, gamesWon }
+  //     return { stats, orderedGames, name: playerScores.name }
+  //   }
+  // )
+  // playerData.sort((a, b) => a.stats.totalScore > b.stats.totalScore)
   // playerData.forEach(({ stats }, index) => {
     
   // });
