@@ -1,17 +1,9 @@
-import reduce from 'lodash/reduce'
-import sum from 'lodash/sum'
+import { sum, sumBy } from 'lodash'
 
-import { PlayerAllTimeData, PlayerName, PlayerTournamentData, PlayerTournamentStats, TournamentData } from "./types"
-import { sumBy } from 'lodash'
-
-const castScore = (value : string, context : any ) => {
-  const isScore = !context.header && context.column.startsWith("game")
-  return isScore ? parseInt(value.trim()) : value
-}
+import { PlayerAllTimeData, PlayerName, PlayerTournamentStats, TournamentData } from "./types"
 
 const enhanceData = (csvData: Record<string, number[]>, shortName : string) : TournamentData => {
   const gamesPlayedTo = 8;
-  console.log(csvData)
   const playerData = Object.entries(csvData).map(([playerName, scores]) => {
     const totalScore : number = sum(scores);
     const gamesWon : number = sumBy(scores, score => Number(score > 8));
@@ -19,28 +11,6 @@ const enhanceData = (csvData: Record<string, number[]>, shortName : string) : To
     const stats : PlayerTournamentStats = { totalScore, gamesWon };
     return { stats, orderedGames: scores, name: playerName }
   })
-  // const playerData = parse(csvData, {columns: true, cast: castScore }).map(
-  //   // TODO: figure out how to type `playerScores`
-  //   (playerScores : any) : PlayerTournamentData => {
-  //     const orderedGames : number[] = reduce(playerScores, (result : number[], score : number, game : string) => {
-  //       if (!game.startsWith("game")) return result;
-
-  //       const gameNumber = parseInt(game.slice(4))
-  //       result[gameNumber - 1] = score
-
-  //       return result
-  //     }, [])
-  //     const totalScore : number = sum(orderedGames)
-  //     const gamesWon : number = reduce(orderedGames, (result : number, score : number) => result += score >= 8 ? 1 : 0, 0)
-
-  //     const stats : PlayerTournamentStats = { totalScore, gamesWon }
-  //     return { stats, orderedGames, name: playerScores.name }
-  //   }
-  // )
-  // playerData.sort((a, b) => a.stats.totalScore > b.stats.totalScore)
-  // playerData.forEach(({ stats }, index) => {
-    
-  // });
 
   const shortSeason = shortName.slice(0, 1) === "S" ? "Summer" : "Winter"
   const year = shortName.slice(1)
@@ -53,11 +23,7 @@ const enhanceData = (csvData: Record<string, number[]>, shortName : string) : To
   }
 }
 
-// export const suggestMissingScores = (scores) => {
-//   return null;
-// }
-
-const calculateAllTimeStats = (tournamentScores : Record<PlayerName, TournamentData>) : Record<PlayerName, PlayerAllTimeData> => {
+const calculateAllTimeStats = (tournamentScores : Record<PlayerName, TournamentData>): Record<PlayerName, PlayerAllTimeData> => {
   const playerStats : Record<PlayerName, PlayerAllTimeData>= {}
 
   for (const { playerData } of Object.values(tournamentScores)) {
